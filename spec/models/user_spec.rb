@@ -8,6 +8,9 @@
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
 #
+#Note to self - re-read through all this again before speaking
+#with Tony and be comfortable with how it fit the rest of the
+#apps architecture...
 
 require 'spec_helper'
 
@@ -104,6 +107,16 @@ end
 
       it { should_not == user_for_invalid_password }
       specify { user_for_invalid_password.should be_false }
+    end
+  end
+  
+ describe "email address with mixed case" do
+    let(:mixed_case_email) { "Foo@ExAMPle.CoM" }
+
+    it "should be saved as all lower-case" do
+      @user.email = mixed_case_email
+      @user.save
+      @user.reload.email.should == mixed_case_email.downcase
     end
   end
 end
