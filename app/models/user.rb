@@ -12,6 +12,7 @@
 class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation
   has_secure_password
+  has_many :microposts, dependent: :destroy
   
   before_save :create_remember_token
 
@@ -29,6 +30,12 @@ class User < ActiveRecord::Base
   #different letter case?
   #Would it need a uniqueness: { case_sensitive: true }
   #in order to stop that, or is it default case sensitive?
+
+def feed
+  # This is preliminary. See "Following users" for the full implementation.
+  Micropost.where("user_id = ?", id)
+end
+
 
 private
 
